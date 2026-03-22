@@ -80,17 +80,68 @@ export const App = () => {
   return (
     <>
       {!webviewUI ? (
-        <main style={{ padding: "12px", fontFamily: "sans-serif", fontSize: "15px" }}>
-          <p style={{ margin: "0 0 10px", textAlign: "center", fontSize: "12px", opacity: 0.6 }}>
-            Source Monitor clip — probe then apply markers
-          </p>
-          <div style={{ display: "flex", gap: "8px", marginBottom: "12px", justifyContent: "center" }}>
+        <main style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          padding: "12px",
+          boxSizing: "border-box",
+          fontFamily: "sans-serif",
+          fontSize: "15px",
+          gap: "8px",
+        }}>
+          {/* Top bar: title + probe button */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <p style={{ margin: 0, flex: 1, fontSize: "12px", opacity: 0.6 }}>
+              Source Monitor clip
+            </p>
             <sp-button
               onClick={isLoadingClip || isApplyingMarkers ? undefined : getClips}
               disabled={isLoadingClip || isApplyingMarkers || undefined}
             >
               {isLoadingClip ? "Probing…" : "Probe Clip"}
             </sp-button>
+          </div>
+
+          {/* Feedback messages */}
+          {clipError && (
+            <p style={{ color: "red", margin: 0 }}>{clipError}</p>
+          )}
+          {clipStatus && (
+            <p style={{ margin: 0, opacity: 0.85 }}>{clipStatus}</p>
+          )}
+
+          {/* Clip details — grows to fill available space */}
+          <div style={{ flex: 1, overflowY: "auto" }}>
+            {clipData && (
+              <>
+                <p style={{ margin: "0 0 2px", fontSize: "11px", opacity: 0.55, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  Probed clip
+                </p>
+                <p style={{ margin: "0 0 4px", fontWeight: "bold", fontSize: "15px" }}>
+                  {clipData.filename}
+                </p>
+                <p style={{ margin: "0 0 8px", opacity: 0.65 }}>
+                  {clipData.chapters.length} chapter{clipData.chapters.length !== 1 ? "s" : ""}
+                </p>
+                <sp-divider size="s" />
+                {clipData.chapters.length === 0 ? (
+                  <p style={{ margin: "8px 0" }}>No chapters found in this clip.</p>
+                ) : (
+                  <ul style={{ margin: "8px 0", paddingLeft: "20px", lineHeight: "1.8" }}>
+                    {clipData.chapters.map((ch, i) => (
+                      <li key={i}>
+                        {formatTime(ch.startTimeMs)} — {ch.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Footer: Apply button pinned bottom-right */}
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <sp-button
               variant="cta"
               onClick={isApplyingMarkers || isLoadingClip || !clipData ? undefined : applyMarkers}
@@ -99,39 +150,6 @@ export const App = () => {
               {isApplyingMarkers ? "Applying…" : "Apply Markers"}
             </sp-button>
           </div>
-
-          {clipError && (
-            <p style={{ color: "red", margin: "4px 0", textAlign: "center" }}>{clipError}</p>
-          )}
-          {clipStatus && (
-            <p style={{ margin: "4px 0", textAlign: "center" }}>{clipStatus}</p>
-          )}
-
-          {clipData && (
-            <div style={{ marginTop: "10px" }}>
-              <p style={{ margin: "0 0 2px", fontSize: "11px", opacity: 0.55, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                Probed clip
-              </p>
-              <p style={{ margin: "0 0 6px", fontWeight: "bold", fontSize: "16px", textAlign: "center" }}>
-                {clipData.filename}
-              </p>
-              <p style={{ margin: "0 0 8px", textAlign: "center", opacity: 0.65 }}>
-                {clipData.chapters.length} chapter{clipData.chapters.length !== 1 ? "s" : ""}
-              </p>
-              <sp-divider size="s" />
-              {clipData.chapters.length === 0 ? (
-                <p style={{ margin: "8px 0", textAlign: "center" }}>No chapters found in this clip.</p>
-              ) : (
-                <ul style={{ margin: "8px 0", paddingLeft: "20px", lineHeight: "1.8" }}>
-                  {clipData.chapters.map((ch, i) => (
-                    <li key={i}>
-                      {formatTime(ch.startTimeMs)} — {ch.title}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
         </main>
       ) : (
         <></>
