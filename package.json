@@ -1,5 +1,5 @@
 {
-  "name": "com.mstep.magicmarker", 
+  "name": "com.mstep.magicmarker",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -9,27 +9,28 @@
     "ccx": "cross-env MODE=package vite build",
     "zip": "cross-env MODE=zip vite build",
     "preview": "vite preview",
-        "hmr": "vite"
+    "hmr": "vite"
   },
   "dependencies": {
+    "mp4box": "^2.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "npm-run-all": "^4.1.5",
-    "@vitejs/plugin-react": "^4.5.1",
     "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
     "@types/node": "^20.8.7",
     "@types/photoshop": "^25.0.2",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
     "@types/ws": "^8.5.8",
+    "@vitejs/plugin-react": "^4.5.1",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "npm-run-all": "^4.1.5",
     "sass": "^1.69.5",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "ws": "^8.14.2",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.6",
-    "dotenv": "^16.4.5",
-    "vite-uxp-plugin": "^1.2.5"
+    "vite-uxp-plugin": "^1.2.5",
+    "ws": "^8.14.2"
   }
 }

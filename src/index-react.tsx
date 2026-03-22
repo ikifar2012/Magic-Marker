@@ -1,3 +1,4 @@
+import "./polyfills/text-encoding";
 import "./app.css";
 import "./index.scss";
 import React from "react";
