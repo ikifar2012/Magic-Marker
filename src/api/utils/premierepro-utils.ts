@@ -29,11 +29,7 @@ export const asTransaction = async (
 ) => {
   const didExecute = proj.executeTransaction((compAction) => {
     for (const action of actions) {
-      const added = compAction.addAction(action);
-
-      if (!added) {
-        throw new Error(`Failed to enqueue action for transaction: ${description}`);
-      }
+      compAction.addAction(action);
     }
   }, description);
 
@@ -47,19 +43,16 @@ export const lockedTransaction = async (
   actions: Action[],
   description: string,
 ) => {
-  let didExecute = false;
-
-  proj.lockedAccess(() => {
-    didExecute = proj.executeTransaction((compAction) => {
-      for (const action of actions) {
-        const added = compAction.addAction(action);
-
-        if (!added) {
-          throw new Error(`Failed to enqueue action for transaction: ${description}`);
-        }
-      }
-    }, description);
-  });
+  console.log(`[transaction] executing "${description}" with ${actions.length} actions`);
+  const didExecute = proj.executeTransaction((compAction) => {
+    console.log("[transaction] inside callback, adding actions...");
+    for (let i = 0; i < actions.length; i++) {
+      const result = compAction.addAction(actions[i]);
+      console.log(`[transaction] addAction[${i}] returned:`, result);
+    }
+    console.log("[transaction] callback done");
+  }, description);
+  console.log(`[transaction] executeTransaction returned:`, didExecute);
 
   if (!didExecute) {
     throw new Error(`Failed to execute transaction: ${description}`);
@@ -136,53 +129,60 @@ const getSelectedTimelineClipContext = async (): Promise<TimelineClipContext> =>
   };
 };
 
-export const applyChapterMarkersToSelectedClip = async (): Promise<AppliedChapterMarkersResult> => {
-  const { clip } = await getSelectedTimelineClipContext();
-  const parsedClip = await parseClipProjectItem(clip);
+export const applyChapterMarkersToSelectedClip = async (probedClip: ProbedClipResult): Promise<AppliedChapterMarkersResult> => {
+  console.log("[apply] starting — chapters to apply:", probedClip.chapters.length, probedClip.filename);
 
-  if (parsedClip.chapters.length === 0) {
-    return {
-      ...parsedClip,
-      appliedCount: 0,
-      removedCount: 0,
-    };
+  const clip = await getSelectedSourceClip();
+  console.log("[apply] got source clip:", clip);
+
+  if (probedClip.chapters.length === 0) {
+    return { ...probedClip, appliedCount: 0, removedCount: 0 };
   }
 
   const markers = await premierepro.Markers.getMarkers(clip);
   const existingMarkers = markers.getMarkers();
-
   const existingChapterMarkers = existingMarkers.filter(
-    (marker) => marker.getType() === premierepro.Marker.MARKER_TYPE_CHAPTER,
+    (marker) => marker.getType() === premierepro.Marker.MARKER_TYPE_COMMENT,
   );
+  console.log("[apply] existing comment markers to remove:", existingChapterMarkers.length);
 
-  const actions: Action[] = [];
-
-  for (const marker of existingChapterMarkers) {
-    actions.push(markers.createRemoveMarkerAction(marker));
-  }
-
-  for (const chapter of parsedClip.chapters) {
-    const startTime = premierepro.TickTime.createWithSeconds(chapter.startTimeMs / 1000);
-
-    if (!startTime || startTime === premierepro.TickTime.TIME_INVALID) {
-      throw new Error(`Invalid chapter marker time for ${chapter.title}.`);
-    }
-
-    actions.push(
-      markers.createAddMarkerAction(
-        chapter.title,
-        premierepro.Marker.MARKER_TYPE_CHAPTER,
-        startTime,
-      ),
-    );
-  }
+  const chaptersToApply = probedClip.chapters.filter(ch => ch.startTimeMs > 0);
+  console.log("[apply] chapters to apply (excluding 0s):", chaptersToApply.length);
 
   const project = await clip.getProject();
-  await lockedTransaction(project, actions, `Apply ${parsedClip.chapters.length} chapter markers`);
+  console.log("[apply] got project:", project?.name);
+
+  let addCount = 0;
+
+  project.lockedAccess(() => {
+    project.executeTransaction((compAction) => {
+      console.log("[apply] inside transaction");
+
+      for (const marker of existingChapterMarkers) {
+        compAction.addAction(markers.createRemoveMarkerAction(marker));
+      }
+
+      for (const chapter of chaptersToApply) {
+        const startTime = premierepro.TickTime.createWithSeconds(chapter.startTimeMs / 1000);
+        console.log(`[apply] adding "${chapter.title}" @ ${chapter.startTimeMs / 1000}s`);
+        const action = markers.createAddMarkerAction(
+          chapter.title,
+          premierepro.Marker.MARKER_TYPE_COMMENT,
+          startTime,
+        );
+        compAction.addAction(action);
+        addCount++;
+      }
+
+      console.log("[apply] transaction built, addCount:", addCount);
+    }, `Apply ${chaptersToApply.length} chapter markers`);
+  });
+
+  console.log("[apply] lockedAccess complete, addCount:", addCount);
 
   return {
-    ...parsedClip,
-    appliedCount: parsedClip.chapters.length,
+    ...probedClip,
+    appliedCount: addCount,
     removedCount: existingChapterMarkers.length,
   };
 };
