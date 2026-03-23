@@ -26,6 +26,7 @@ export const App = () => {
   const [clipStatus, setClipStatus] = useState<string | null>(null);
   const [isLoadingClip, setIsLoadingClip] = useState(false);
   const [isApplyingMarkers, setIsApplyingMarkers] = useState(false);
+  const [markerColor, setMarkerColor] = useState(0);
 
   const hostName = (uxp.host.name as string).toLowerCase();
   if (hostName === "premierepro") {
@@ -53,7 +54,7 @@ export const App = () => {
     setClipError(null);
     setClipStatus(null);
     try {
-      const result = await applyChapterMarkersToSelectedClip(clipData);
+      const result = await applyChapterMarkersToSelectedClip(clipData, markerColor);
       setClipData(result);
       setClipStatus(
         result.appliedCount === 0
@@ -140,8 +141,22 @@ export const App = () => {
             )}
           </div>
 
-          {/* Footer: Apply button pinned bottom-right */}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          {/* Footer: color picker + Apply button pinned bottom-right */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px" }}>
+            <select
+              value={markerColor}
+              onChange={(e) => setMarkerColor(Number(e.target.value))}
+              disabled={isApplyingMarkers || isLoadingClip || !clipData}
+              style={{ fontSize: "13px", padding: "3px 6px" }}
+            >
+              <option value={0}>Green</option>
+              <option value={1}>Red</option>
+              <option value={2}>Magenta</option>
+              <option value={3}>Orange</option>
+              <option value={4}>Yellow</option>
+              <option value={5}>Blue</option>
+              <option value={6}>Cyan</option>
+            </select>
             <sp-button
               variant="cta"
               onClick={isApplyingMarkers || isLoadingClip || !clipData ? undefined : applyMarkers}

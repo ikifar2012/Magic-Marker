@@ -103,7 +103,10 @@ const getSelectedTimelineClipContext = async (): Promise<TimelineClipContext> =>
   };
 };
 
-export const applyChapterMarkersToSelectedClip = async (probedClip: ProbedClipResult): Promise<AppliedChapterMarkersResult> => {
+export const applyChapterMarkersToSelectedClip = async (
+  probedClip: ProbedClipResult,
+  colorIndex: number = 0,
+): Promise<AppliedChapterMarkersResult> => {
   const clip = await getSelectedSourceClip();
 
   if (probedClip.chapters.length === 0) {
@@ -119,6 +122,7 @@ export const applyChapterMarkersToSelectedClip = async (probedClip: ProbedClipRe
   const chaptersToApply = probedClip.chapters.filter((ch) => ch.startTimeMs > 0);
   const project = await clip.getProject();
 
+  // Transaction 1: remove old markers and add new ones
   project.lockedAccess(() => {
     project.executeTransaction((compAction) => {
       for (const marker of existingChapterMarkers) {
@@ -136,6 +140,20 @@ export const applyChapterMarkersToSelectedClip = async (probedClip: ProbedClipRe
         );
       }
     }, `Apply ${chaptersToApply.length} chapter markers`);
+  });
+
+  // Transaction 2: set color on the newly added markers
+  const refreshedMarkers = await premierepro.Markers.getMarkers(clip);
+  const newMarkers = refreshedMarkers
+    .getMarkers()
+    .filter((m) => m.getType() === premierepro.Marker.MARKER_TYPE_COMMENT);
+
+  project.lockedAccess(() => {
+    project.executeTransaction((compAction) => {
+      for (const marker of newMarkers) {
+        compAction.addAction(marker.createSetColorByIndexAction(colorIndex));
+      }
+    }, "Set marker color");
   });
 
   return {
