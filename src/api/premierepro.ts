@@ -1,5 +1,5 @@
 import { premierepro } from "../globals";
-import { asTransaction, lockedTransaction } from "./utils/premierepro-utils";
+import { asTransaction } from "./utils/premierepro-utils";
 
 export const notify = async (message: string) => {
   alert(message);
@@ -25,11 +25,7 @@ export const renameItem = async () => {
   const proj = await premierepro.Project.getActiveProject();
   const root = await proj.getRootItem();
   const items = await root.getItems();
-  await lockedTransaction(
-    proj,
-    [items[0].createSetNameAction("TEST")],
-    "Rename Item",
-  );
+  await asTransaction(proj, [items[0].createSetNameAction("TEST")], "Rename Item");
 };
 
 // export const renameItemCurrent = async () => {
