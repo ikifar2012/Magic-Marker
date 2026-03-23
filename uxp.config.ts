@@ -94,12 +94,12 @@ const manifest: UXP_Manifest = {
       ],
     },
     clipboard: "readAndWrite",
-    webview: {
-      allow: "yes",
-      allowLocalRendering: "yes",
-      domains: "all",
-      enableMessageBridge: "localAndRemote",
-    },
+    // webview: {
+    //   allow: "yes",
+    //   allowLocalRendering: "yes",
+    //   // domains: "all",
+    //   // enableMessageBridge: "localAndRemote",
+    // },
     ipc: {
       enablePluginCommunication: true,
     },
