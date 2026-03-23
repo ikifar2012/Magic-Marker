@@ -33,22 +33,6 @@ const manifest: UXP_Manifest = {
       maximumSize: { width: 2000, height: 2000 },
       preferredDockedSize: { width: 230, height: 300 },
       preferredFloatingSize: { width: 450, height: 400 },
-      icons: [
-        {
-          width: 23,
-          height: 23,
-          path: "icons/dark.png",
-          scale: [1, 2],
-          theme: ["darkest", "dark", "medium"],
-        },
-        {
-          width: 23,
-          height: 23,
-          path: "icons/light.png",
-          scale: [1, 2],
-          theme: ["lightest", "light"],
-        },
-      ],
     },
 
 
@@ -106,12 +90,6 @@ const manifest: UXP_Manifest = {
     },
     network: {
       domains: [
-        "https://hyperbrew.co",
-        "https://github.com",
-        "https://vitejs.dev",
-        "https://svelte.dev",
-        "https://reactjs.org",
-        "https://vuejs.org/",
         `ws://localhost:${extraPrefs.hotReloadPort}`, // Required for hot reload
       ],
     },
@@ -127,20 +105,12 @@ const manifest: UXP_Manifest = {
     },
     allowCodeGenerationFromStrings: true,
 
-  },
-    icons: [
-    {
-      width: 48,
-      height: 48,
-      path: "icons/plugin-icon.png",
-      scale: [1, 2],
-      theme: ["darkest", "dark", "medium", "lightest", "light", "all"],
-      species: ["pluginList"],
-    },
-  ],
+  }
 };
 
 export const config: UXP_Config = {
   manifest,
   ...extraPrefs,
+  webviewUi: false,
+  webviewReloadPort: 0
 };
