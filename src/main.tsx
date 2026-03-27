@@ -171,7 +171,7 @@ export const App = () => {
               <option value={2}>Magenta</option>
               <option value={3}>Orange</option>
               <option value={4}>Yellow</option>
-              <option value={5}>Blue</option>
+              <option value={5}>White</option>
               <option value={6}>Cyan</option>
             </select>
             <sp-button

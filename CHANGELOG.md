@@ -1,5 +1,9 @@
 # Bolt UXP Changelog
 
+## Version 1.0.0 (2026-03-27)
+
+- Marker color label corrected: Blue is now shown as White in the marker dropdown
+
 ## Version 1.2.11 (2026-2-12)
 
 - Hide Resize Handle in Photoshop on Launch
