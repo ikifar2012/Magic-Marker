@@ -1,50 +1,137 @@
-# Core Bolt UXP Dev Guide
+# Magic Marker — Developer Guide
 
-## Monorepo Overview
+Magic Marker is built with [Bolt UXP](https://github.com/hyperbrew/bolt-uxp) (React + Vite + TypeScript). This guide covers everything you need to build, develop, and contribute to the plugin.
 
-### Purpose of `bolt-uxp`
+## Prerequisites
 
-The `bolt-uxp` package is both the root folder of the monorepo and an npm package in itself to be used by the `create-bolt-uxp` package.
+- [Node.js 18+](https://nodejs.org/en/)
+- [Bun](https://bun.sh/) (preferred), npm, or pnpm
+- [Adobe UXP Developer Tool (UDT)](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation/) — download via the Adobe CC app
+- Adobe Premiere Pro (UXP plugin support required)
+- Git
 
-### Purpose of `create-bolt-uxp`
+## Project Setup
 
-The `create-bolt-uxp` package is a CLI tool that is used to create a new project from the `bolt-uxp` template.
+```bash
+git clone https://github.com/ikifar2012/Magic-Marker.git
+cd Magic-Marker
+bun install       # or: npm i / pnpm i
+```
 
-### Purpose of `vite-uxp-plugin`
+## Development Workflow
 
-The `vite-uxp-plugin` package is a Vite plugin that brings all the features needed for building UXP Plugins with Bolt UXP.
+**Build the plugin** (required before first load, and after config changes):
 
-## Dev Quickstart
+```bash
+bun run build     # or: npm run build / pnpm build
+```
 
-If you'd like to develop the core templates of Bolt UXP in order to contribute by submitting a PR, you can do so by following these steps:
+**Hot-reload dev mode** (rebuilds on each file save):
 
-- Clone the repo
-- Run `yarn` to install dependencies
-- Run `yarn dev` to start the dev server
+```bash
+bun run dev       # or: npm run dev / pnpm dev
+```
 
-To test the different frameworks (React, Vue, Svelte), enable the corresponding `<script />` tag in `index.html` and disable the others.
+**Package as CCX** for distribution:
 
-## How Templating Works
+```bash
+bun run ccx       # or: npm run ccx / pnpm ccx
+```
 
-Root directory is in the main `bolt-uxp` folder.
+**Bundle CCX + zip assets** to `./zip`:
 
-`package.framework.jsonc` for the framework is copied and renamed to `package.json` in the root directory (e.g. `package.react.json`)
+```bash
+bun run zip       # or: npm run zip / pnpm zip
+```
 
-File includes and excludes for each template can be found in `create-bolt-uxp/src/index.ts`
+## UXP Developer Tool (UDT) Setup
 
-All code sections:
+The Adobe UXP Developer Tool is required to sideload the plugin during development.
 
-- before: ``
+### Loading the Plugin
 
-Are removed if the variable doesn't match the framework (e.g. React, Vue, Svelte), app (e.g. PhotoShop, InDesign, etc.), or feature (e.g. Hybrid) selected.
+1. Open Adobe UXP Developer Tool (2.0 or later).
+2. Click **Add Plugin** and select `dist/manifest.json`.
+3. Click **Load** to load the plugin into Premiere Pro.
+4. Click **Debug** to open the DevTools console.
 
+> **Note:** Do not use "Load and Watch" — Bolt UXP's built-in WebSocket hot-reload is more reliable.
 
-For more info on how templating works, refer to the Meta Bolt respository: [meta-bolt](https://github.com/hyperbrew/meta-bolt)
+## Project Structure
 
-## How to publish changes:
+```
+src/
+  main.tsx                  # Main UI component (React)
+  globals.ts                # UXP / host API imports
+  api/
+    uxp.ts                  # UXP utilities (openURL, panel, color)
+    premierepro.ts          # Premiere Pro API helpers
+    utils/
+      premierepro-utils.ts  # Marker application logic
+      photoshop-utils.ts
+  lib/
+    mp4parser.ts            # OBS Hybrid MP4 chapter extraction
+  types/
+    ppro.d.ts               # Premiere Pro type definitions
+```
 
-1. If `vite-uxp-plugin` has any changes, update and publish in npm
+## Key Source Files
 
-2. If `bolt-uxp` has any changes, update and publish in npm (include latest `vite-uxp-plugin` version in the `package.json` file)
+| File | Purpose |
+|------|---------|
+| `src/main.tsx` | Panel UI — probe button, marker list, color picker, apply button |
+| `src/lib/mp4parser.ts` | Parses OBS Hybrid MP4 files and extracts chapter markers |
+| `src/api/utils/premierepro-utils.ts` | Reads the Source Monitor clip, applies markers via the Premiere Pro API |
+| `src/api/uxp.ts` | `openURL()`, color theme polyfills, UDT panel helpers |
 
-3. If `create-bolt-uxp` has any changes, update and publish in npm (include latest `bolt-uxp` version in the `package.json` file)
+## Installing a Built CCX
+
+### A. ZXP / UXP Installer
+
+Download from <https://aescripts.com/learn/zxp-installer/>, then drag and drop the CCX file.
+
+### B. Adobe CC App
+
+Double-click the CCX file and follow the prompts.
+
+### C. UPIA (command line)
+
+**Windows:**
+```
+cd "C:\Program Files\Common Files\Adobe\Adobe Desktop Common\RemoteComponents\UPI\UnifiedPluginInstallerAgent"
+UnifiedPluginInstallerAgent.exe /install /path/to/magic-marker.ccx
+```
+
+**Mac:**
+```
+cd "/Library/Application Support/Adobe/Adobe Desktop Common/RemoteComponents/UPI/UnifiedPluginInstallerAgent/UnifiedPluginInstallerAgent.app/Contents/MacOS"
+./UnifiedPluginInstallerAgent --install /path/to/magic-marker.ccx
+```
+
+## Releases
+
+Releases are automated via GitHub Actions. To publish a new release:
+
+```bash
+git tag 1.0.1
+git push origin --tags
+```
+
+The workflow builds the CCX and attaches it to the GitHub Release automatically.
+
+## Contributing
+
+1. Fork the repository and create a feature branch.
+2. Make your changes and run `bun run build` to verify.
+3. Load the plugin in UDT and test in Premiere Pro.
+4. Open a pull request against `main`.
+
+For bugs or feature requests, [open an issue](https://github.com/ikifar2012/Magic-Marker/issues) or email [contact@mathesonsteplock.ca](mailto:contact@mathesonsteplock.ca).
+
+## UXP Resources
+
+- [Premiere Pro UXP Docs](https://developer.adobe.com/premiere-pro/uxp)
+- [UXP API Reference](https://developer.adobe.com/photoshop/uxp/2022/uxp-api/)
+- [Adobe UXP Developer Forums](https://forums.creativeclouddeveloper.com/)
+- [Bolt UXP](https://github.com/hyperbrew/bolt-uxp)
+
