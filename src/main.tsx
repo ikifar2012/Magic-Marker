@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { uxp, premierepro } from "./globals";
+import { openURL } from "./api/uxp";
 import {
   applyChapterMarkersToSelectedClip,
   probeSelectedClip,
@@ -141,8 +142,24 @@ export const App = () => {
             )}
           </div>
 
-          {/* Footer: color picker + Apply button pinned bottom-right */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px" }}>
+          {/* Footer: learn more link (left) + color picker + Apply button (right) */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); openURL("https://tools.mstep.link/products/magic-marker"); }}
+              style={{
+                textDecoration: "none",
+                fontSize: "11px",
+                opacity: 0.6,
+
+                flexShrink: 0,
+              }}
+              title="Learn more & donate"
+            >
+              Donate ❤️
+              
+            </a>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <select
               value={markerColor}
               onChange={(e) => setMarkerColor(Number(e.target.value))}
@@ -164,6 +181,7 @@ export const App = () => {
             >
               {isApplyingMarkers ? "Applying…" : "Apply Markers"}
             </sp-button>
+            </div>
           </div>
         </main>
       ) : (
