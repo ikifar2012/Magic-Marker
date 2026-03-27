@@ -69,7 +69,7 @@
 ## Version 1.1.1 (2025-06-16)
 
 - Add Changelog
-- Update Meta Bolt so yarn dep checks package versions and changelog
+- Update Meta Bolt so dependency checks package versions and changelog
 
 ## Version 1.1.0 (2025-06-05)
 
