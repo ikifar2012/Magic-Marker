@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
-    "@types/node": "^20.19.37",
+    "@types/node": "^24.12.0",
     "@types/photoshop": "^25.0.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
