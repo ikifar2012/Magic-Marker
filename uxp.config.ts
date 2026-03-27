@@ -4,10 +4,10 @@ import { version } from "./package.json";
 const extraPrefs = {
   hotReloadPort: 8080,
     copyZipAssets: ["public-zip/*"],
-  uniqueIds: true,
+  uniqueIds: false,
 };
 
-export const id = "com.mstep.magicmarker"; 
+export const id = "8d2a5b67"; 
 const name = "Magic Marker"; 
 
 const manifest: UXP_Manifest = {
