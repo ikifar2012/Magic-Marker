@@ -24,6 +24,9 @@ export default defineConfig({
     emptyOutDir: !shouldNotEmptyDir,
     rollupOptions: {
       external: [
+        "photoshop",
+        "illustrator",
+        "indesign",
         "premierepro", 
         "uxp",
         "fs",
