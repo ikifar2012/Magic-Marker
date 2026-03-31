@@ -1,6 +1,6 @@
 # Magic Marker
 
-**Version 1.0.0** · Adobe Premiere Pro UXP Plugin
+**Version 1.0.0** · UXP Plugin for Adobe Premiere Pro
 
 ![Magic Marker](https://tools.mstep.link/images/magic-marker/hero.png)
 
