@@ -4,7 +4,7 @@
 
 ![Magic Marker](https://tools.mstep.link/images/magic-marker/hero.png)
 
-Magic Marker is an Adobe Premiere Pro UXP plugin that automatically extracts chapter markers from OBS Hybrid MP4 files and applies them to your clips. Perfect for streamers and video editors who want to organize their footage with minimal effort.
+Magic Marker is a plugin for Premiere Pro that automatically extracts chapter markers from OBS Hybrid MP4 files and applies them to your clips. Perfect for streamers and video editors who want to organize their footage with minimal effort.
 
 **Free and Open Source** · [Product Page](https://tools.mstep.link/products/magic-marker) · [GitHub](https://github.com/ikifar2012/Magic-Marker) · [Support](https://ko-fi.com/mathesonsteplock)
 
