@@ -13,15 +13,15 @@
   },
   "dependencies": {
     "mp4box": "^2.3.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
     "@types/node": "^25.5.0",
     "@types/photoshop": "^25.0.4",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^6.0.1",
     "cross-env": "^10.1.0",
