@@ -11,7 +11,7 @@
       },
       "devDependencies": {
         "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
-        "@types/node": "^25.9.6",
+        "@types/node": "^25.9.7",
         "@types/photoshop": "^25.0.4",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
@@ -131,7 +131,7 @@
 
     "@tsconfig/node16": ["@tsconfig/node16@1.0.4", "", {}, "sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA=="],
 
-    "@types/node": ["@types/node@25.9.6", "", { "dependencies": { "undici-types": ">=7.24.0 <7.24.7" } }, "sha512-JR6Q/PV5DKFvjrGFVqQJdeG0qvsqQQLDa3TzFrqVwhqRXqwNaxPo2KYCtCQXpOdIulCouKwT7a6in9nFthBAzw=="],
+    "@types/node": ["@types/node@25.9.7", "", { "dependencies": { "undici-types": ">=7.24.0 <7.24.7" } }, "sha512-Y+axoNWOFLvDNFxNbDA+kqqV05imHwTu5bZWWO6tQM3Y2NX1jvzUJkYlf4nYnMCnvu4wQBKW6Nr+ok6yHWA9aQ=="],
 
     "@types/normalize-package-data": ["@types/normalize-package-data@2.4.4", "", {}, "sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA=="],
 
