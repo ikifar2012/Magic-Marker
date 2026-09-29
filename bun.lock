@@ -12,7 +12,7 @@
       "devDependencies": {
         "@adobe/cc-ext-uxp-types": "https://github.com/justintaylor-dev/cc-ext-uxp-types.git",
         "@types/node": "^26.6.3",
-        "@types/photoshop": "^25.0.4",
+        "@types/photoshop": "^27.11.0",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@types/ws": "^8.18.2",
@@ -129,7 +129,7 @@
 
     "@types/node": ["@types/node@26.6.3", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg=="],
 
-    "@types/photoshop": ["@types/photoshop@25.0.4", "", {}, "sha512-HfsVvgCrkOhGYlEmtsqT3pvLHFSoa1OXIHr37GsWy1y9FQJw/vb7xcDBGMoYuJemnmWlDMqdKgnnYUZL6kF5HA=="],
+    "@types/photoshop": ["@types/photoshop@27.11.0", "", {}, "sha512-PP5FOt7NnFwGgH/BgM/0o0N3rW0IkUyniDovIwil5F7VApiBn0++zoRcih8ZRLdPVY+v/3oeXGTCTAExehiqPQ=="],
 
     "@types/prettier": ["@types/prettier@3.0.0", "", { "dependencies": { "prettier": "*" } }, "sha512-mFMBfMOz8QxhYVbuINtswBp9VL2b4Y0QqYHwqLz3YbgtfAcat2Dl6Y1o4e22S/OVE6Ebl9m7wWiMT2lSbAs1wA=="],
 
