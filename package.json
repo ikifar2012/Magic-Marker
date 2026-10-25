@@ -12,7 +12,7 @@
     "hmr": "vite"
   },
   "dependencies": {
-    "mp4box": "^2.4.1",
+    "mp4box": "^2.5.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
